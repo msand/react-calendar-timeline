@@ -179,7 +179,7 @@ export default class App extends Component {
     const startDay = moment(start).day()
     const endDay = moment(end).day()
 
-    let groupKey = '0'
+    let groupKey = ''
     for (const key of Object.keys(groupTops)) {
       const groupTop = groupTops[key]
       if (y > groupTop) {
@@ -187,6 +187,10 @@ export default class App extends Component {
       } else {
         break
       }
+    }
+
+    if (groupKey === '' || pageX < offsetLeft) {
+      return
     }
 
     this.setState({
