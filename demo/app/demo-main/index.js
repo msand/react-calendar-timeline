@@ -262,11 +262,11 @@ export default class App extends Component {
     })
   }
 
-  scrollObj = {
+  scrollRef = {
     current: null,
   }
   onScrollRef = ref => {
-    this.scrollObj.current = ref
+    this.scrollRef.current = ref
   }
   timelineRef = createRef()
 
@@ -278,7 +278,7 @@ export default class App extends Component {
         <Draggable
           handleItemDrop={this.handleItemDrop}
           timelineRef={this.timelineRef}
-          scrollRef={this.scrollObj}
+          scrollRef={this.scrollRef}
           data={{ title: 'Drag & drop works' }}
         >
           <div
