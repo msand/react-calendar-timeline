@@ -8,6 +8,7 @@ export default class Sidebar extends Component {
     groups: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
+    headerHeight: PropTypes.number,
     groupHeights: PropTypes.array.isRequired,
     keys: PropTypes.object.isRequired,
     groupRenderer: PropTypes.func,
@@ -36,13 +37,22 @@ export default class Sidebar extends Component {
   }
 
   render() {
-    const { width, groupHeights, height, isRightSidebar } = this.props
-
+    const {
+      width,
+      groupHeights,
+      height,
+      isRightSidebar,
+      headerHeight = 60
+    } = this.props
     const { groupIdKey, groupTitleKey, groupRightTitleKey } = this.props.keys
 
     const sidebarStyle = {
       width: `${width}px`,
-      height: `${height}px`
+      height: `${height}px`,
+      top: `${headerHeight}px`,
+      [isRightSidebar ? 'right' : 'left']: 0,
+      position: 'sticky',
+      zIndex: 100
     }
 
     const groupsStyle = {

@@ -14,12 +14,16 @@ class SidebarHeader extends React.PureComponent {
 
   getRootProps = (props = {}) => {
     const { style } = props
-    const width =
-      this.props.variant === RIGHT_VARIANT
-        ? this.props.rightSidebarWidth
-        : this.props.leftSidebarWidth
+    const isRight = this.props.variant === RIGHT_VARIANT
+    const width = isRight
+      ? this.props.rightSidebarWidth
+      : this.props.leftSidebarWidth
     return {
       style: {
+        zIndex: 1,
+        position: 'sticky',
+        [isRight ? 'right' : 'left']: 0,
+        minWidth: width,
         ...style,
         width
       }
