@@ -1043,7 +1043,6 @@ export default class ReactCalendarTimeline extends Component {
                 <ScrollElement
                   scrollRef={this.getScrollElementRef}
                   width={width}
-                  height={height}
                   onZoom={this.changeZoom}
                   onWheelZoom={this.handleWheelZoom}
                   traditionalZoom={traditionalZoom}
@@ -1062,7 +1061,7 @@ export default class ReactCalendarTimeline extends Component {
                         canvasWidth,
                         minUnit,
                         timeSteps,
-                        height - headerHeight
+                        height
                       )}
                       {this.rows(canvasWidth, groupHeights, groups)}
                       {this.items(
@@ -1082,7 +1081,7 @@ export default class ReactCalendarTimeline extends Component {
                         dimensionItems,
                         groupHeights,
                         groupTops,
-                        height - headerHeight,
+                        height,
                         visibleTimeStart,
                         visibleTimeEnd,
                         minUnit,
