@@ -182,9 +182,7 @@ class ScrollElement extends Component {
     const scrollComponentStyle = {
       width: `${width}px`,
       minWidth: `${width}px`,
-      maxHeight: '100vh',
       cursor: isDragging ? 'move' : 'default',
-      position: 'relative'
     }
 
     return (

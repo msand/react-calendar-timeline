@@ -16,18 +16,28 @@ $sidebar-background-color: #c52020;
 $list-item-padding: 0 4px;
 $weekend: rgba(250, 246, 225, 0.5);
 
+
 .react-calendar-timeline {
+  flex: 1;
+  height: 100%;
+  display: flex;
+
   * {
     box-sizing: border-box;
   }
 
   .rct-outer {
+    height: 100%;
     display: block;
     overflow: hidden;
+    position: absolute;
     white-space: nowrap;
   }
 
   .rct-scroll {
+    height: 100%;
+    max-height: 100vh;
+    position: relative;
     display: inline-block;
     white-space: normal; // was set to nowrap in .rct-outer
     vertical-align: top;
