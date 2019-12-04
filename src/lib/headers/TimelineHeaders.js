@@ -14,31 +14,22 @@ class TimelineHeaders extends React.Component {
     className: PropTypes.string,
     calendarHeaderStyle: PropTypes.object,
     calendarHeaderClassName: PropTypes.string,
-    headerRef: PropTypes.func
-  }
-
-  constructor(props) {
-    super(props)
+    headerRef: PropTypes.func,
+    sticky: PropTypes.bool
   }
 
   getRootStyle = () => {
     return {
       ...this.props.style,
       display: 'flex',
-      width: '100%'
-    }
-  }
-
-  getCalendarHeaderStyle = () => {
-    const {
-      leftSidebarWidth,
-      rightSidebarWidth,
-      calendarHeaderStyle
-    } = this.props
-    return {
-      ...calendarHeaderStyle,
-      overflow: 'hidden',
-      width: `calc(100% - ${leftSidebarWidth + rightSidebarWidth}px)`
+      width: '300%',
+      ...(this.props.sticky
+        ? {
+            position: 'sticky',
+            zIndex: 101,
+            top: 0
+          }
+        : null)
     }
   }
 
@@ -61,24 +52,32 @@ class TimelineHeaders extends React.Component {
     let rightSidebarHeader
     let leftSidebarHeader
     let calendarHeaders = []
-    const children = Array.isArray(this.props.children)
-      ? this.props.children.filter(c => c)
-      : [this.props.children]
-    React.Children.map(children, child => {
-      if (this.isSidebarHeader(child)) {
-        if (child.props.variant === RIGHT_VARIANT) {
-          rightSidebarHeader = child
+    const {
+      children,
+      className,
+      registerScroll,
+      rightSidebarWidth,
+      calendarHeaderStyle,
+      calendarHeaderClassName
+    } = this.props
+    React.Children.map(
+      Array.isArray(children) ? children.filter(c => c) : [children],
+      child => {
+        if (this.isSidebarHeader(child)) {
+          if (child.props.variant === RIGHT_VARIANT) {
+            rightSidebarHeader = child
+          } else {
+            leftSidebarHeader = child
+          }
         } else {
-          leftSidebarHeader = child
+          calendarHeaders.push(child)
         }
-      } else {
-        calendarHeaders.push(child)
       }
-    })
+    )
     if (!leftSidebarHeader) {
       leftSidebarHeader = <SidebarHeader />
     }
-    if (!rightSidebarHeader && this.props.rightSidebarWidth) {
+    if (!rightSidebarHeader && rightSidebarWidth) {
       rightSidebarHeader = <SidebarHeader variant="right" />
     }
     return (
@@ -86,16 +85,13 @@ class TimelineHeaders extends React.Component {
         ref={this.handleRootRef}
         data-testid="headerRootDiv"
         style={this.getRootStyle()}
-        className={classNames('rct-header-root', this.props.className)}
+        className={classNames('rct-header-root', className)}
       >
         {leftSidebarHeader}
         <div
-          ref={this.props.registerScroll}
-          style={this.getCalendarHeaderStyle()}
-          className={classNames(
-            'rct-calendar-header',
-            this.props.calendarHeaderClassName
-          )}
+          ref={registerScroll}
+          style={{ ...calendarHeaderStyle, position: 'relative' }}
+          className={classNames('rct-calendar-header', calendarHeaderClassName)}
           data-testid="headerContainer"
         >
           {calendarHeaders}
@@ -111,7 +107,8 @@ const TimelineHeadersWrapper = ({
   style,
   className,
   calendarHeaderStyle,
-  calendarHeaderClassName
+  calendarHeaderClassName,
+  sticky
 }) => (
   <TimelineHeadersConsumer>
     {({ leftSidebarWidth, rightSidebarWidth, registerScroll }) => {
@@ -121,6 +118,7 @@ const TimelineHeadersWrapper = ({
           rightSidebarWidth={rightSidebarWidth}
           registerScroll={registerScroll}
           style={style}
+          sticky={sticky}
           className={className}
           calendarHeaderStyle={calendarHeaderStyle}
           calendarHeaderClassName={calendarHeaderClassName}
@@ -133,6 +131,7 @@ const TimelineHeadersWrapper = ({
 )
 
 TimelineHeadersWrapper.propTypes = {
+  sticky: PropTypes.bool,
   style: PropTypes.object,
   children: PropTypes.node,
   className: PropTypes.string,
