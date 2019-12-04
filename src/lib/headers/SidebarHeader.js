@@ -20,7 +20,7 @@ class SidebarHeader extends React.PureComponent {
       : this.props.leftSidebarWidth
     return {
       style: {
-        zIndex: 1,
+        zIndex: 100,
         position: 'sticky',
         [isRight ? 'right' : 'left']: 0,
         minWidth: width,

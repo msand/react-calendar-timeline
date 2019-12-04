@@ -176,13 +176,13 @@ class ScrollElement extends Component {
   }
 
   render() {
-    const { width, height, children } = this.props
+    const { width, children } = this.props
     const { isDragging } = this.state
 
     const scrollComponentStyle = {
       width: `${width}px`,
+      minWidth: `${width}px`,
       maxHeight: '100vh',
-      height: `${height}px`,
       cursor: isDragging ? 'move' : 'default',
       position: 'relative'
     }
