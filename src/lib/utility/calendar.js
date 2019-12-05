@@ -653,8 +653,8 @@ export function getCanvasBoundariesFromVisibleTime(
   visibleTimeEnd
 ) {
   const zoom = visibleTimeEnd - visibleTimeStart
-  const canvasTimeStart = visibleTimeStart - (visibleTimeEnd - visibleTimeStart)
-  const canvasTimeEnd = canvasTimeStart + zoom * 3
+  const canvasTimeStart = visibleTimeStart - zoom
+  const canvasTimeEnd = visibleTimeEnd + zoom
   return [canvasTimeStart, canvasTimeEnd]
 }
 

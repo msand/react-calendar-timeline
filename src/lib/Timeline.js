@@ -539,17 +539,21 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   changeZoom = (scale, offset = 0.5) => {
-    const { minZoom, maxZoom } = this.props
-    const oldZoom = this.state.visibleTimeEnd - this.state.visibleTimeStart
+    const { minZoom, maxZoom, sidebarWidth, onTimeChange } = this.props
+    const { visibleTimeEnd, visibleTimeStart, width } = this.state
+    const oldZoom = visibleTimeEnd - visibleTimeStart
     const newZoom = Math.min(
       Math.max(Math.round(oldZoom * scale), minZoom),
       maxZoom
     ) // min 1 min, max 20 years
+    if (sidebarWidth) {
+      offset -= sidebarWidth / width
+    }
     const newVisibleTimeStart = Math.round(
-      this.state.visibleTimeStart + (oldZoom - newZoom) * offset
+      visibleTimeStart + (oldZoom - newZoom) * offset
     )
 
-    this.props.onTimeChange(
+    onTimeChange(
       newVisibleTimeStart,
       newVisibleTimeStart + newZoom,
       this.updateScrollCanvas
