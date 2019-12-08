@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component, createRef } from 'react'
+import React, { Component } from 'react'
 
 import { _get, arraysEqual } from '../utility/generic'
 import interact from 'interactjs'
@@ -27,49 +27,49 @@ export default class Sidebar extends Component {
     )
   }
 
-  componentDidMount() {
+  setResizeRef = element => {
     const { isRightSidebar } = this.props
-    interact(this.ref.current)
-      .resizable({
-        edges: {
-          left: isRightSidebar,
-          right: !isRightSidebar,
-          top: false,
-          bottom: false
-        }
-      })
-      .on('resizestart', e => {
-        this.setState({
-          resizing: true,
-          resizeEdge: isRightSidebar ? 'left' : 'right',
-          resizeStart: e.pageX,
-          resizeTime: 0
+    if (element) {
+      this.interact = interact(element)
+        .resizable({
+          edges: {
+            left: isRightSidebar,
+            right: !isRightSidebar,
+            top: false,
+            bottom: false
+          }
         })
-      })
-      .on('resizemove', e => {
-        if (this.state.resizing) {
-          if (this.props.onResizeSidebar) {
-            this.props.onResizeSidebar(isRightSidebar, e.pageX)
-          }
-        }
-      })
-      .on('resizeend', e => {
-        if (this.state.resizing) {
-          if (this.props.onResizeSidebar) {
-            this.props.onResizeSidebar(isRightSidebar, e.pageX)
-          }
+        .on('resizestart', e => {
           this.setState({
-            resizing: null,
-            resizeStart: null,
-            resizeEdge: null,
-            resizeTime: null
+            resizing: true,
+            resizeEdge: isRightSidebar ? 'left' : 'right',
+            resizeStart: e.pageX,
+            resizeTime: 0
           })
-        }
-      })
-
-    this.setState({
-      interactMounted: true
-    })
+        })
+        .on('resizemove', e => {
+          if (this.state.resizing) {
+            if (this.props.onResizeSidebar) {
+              this.props.onResizeSidebar(isRightSidebar, e.pageX)
+            }
+          }
+        })
+        .on('resizeend', e => {
+          if (this.state.resizing) {
+            if (this.props.onResizeSidebar) {
+              this.props.onResizeSidebar(isRightSidebar, e.pageX)
+            }
+            this.setState({
+              resizing: null,
+              resizeStart: null,
+              resizeEdge: null,
+              resizeTime: null
+            })
+          }
+        })
+    } else if (this.interact) {
+      this.interact.unset()
+    }
   }
 
   renderGroupContent(group, isRightSidebar, groupTitleKey, groupRightTitleKey) {
@@ -82,8 +82,6 @@ export default class Sidebar extends Component {
       return _get(group, isRightSidebar ? groupRightTitleKey : groupTitleKey)
     }
   }
-
-  ref = createRef()
 
   render() {
     const {
@@ -140,7 +138,7 @@ export default class Sidebar extends Component {
       >
         <div style={groupsStyle}>{groupLines}</div>
         <div
-          ref={this.ref}
+          ref={this.setResizeRef}
           className={'rct-sidebar-resize'}
           style={isRightSidebar ? { left: 0 } : { right: 0 }}
         />
