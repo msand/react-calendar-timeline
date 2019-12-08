@@ -48,6 +48,8 @@ export default class ReactCalendarTimeline extends Component {
 
     minZoom: PropTypes.number,
     maxZoom: PropTypes.number,
+    minScale: PropTypes.number,
+    maxScale: PropTypes.number,
 
     clickTolerance: PropTypes.number,
 
@@ -171,6 +173,8 @@ export default class ReactCalendarTimeline extends Component {
 
     minZoom: 60 * 60 * 1000, // 1 hour
     maxZoom: 5 * 365.24 * 86400 * 1000, // 5 years
+    minScale: 0.9,
+    maxScale: 1.1,
 
     clickTolerance: 3, // how many pixels can we drag for it to be still considered a click?
 
@@ -539,11 +543,12 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   changeZoom = (scale, offset = 0.5) => {
-    const { minZoom, maxZoom, sidebarWidth, onTimeChange } = this.props
+    const { minZoom, maxZoom, minScale, maxScale, sidebarWidth, onTimeChange } = this.props
     const { visibleTimeEnd, visibleTimeStart, width } = this.state
     const oldZoom = visibleTimeEnd - visibleTimeStart
+    const newScale = Math.min(Math.max(minScale, scale), maxScale)
     const newZoom = Math.min(
-      Math.max(Math.round(oldZoom * scale), minZoom),
+      Math.max(Math.round(oldZoom * newScale), minZoom),
       maxZoom
     ) // min 1 min, max 20 years
     if (sidebarWidth) {
