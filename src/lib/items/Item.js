@@ -27,6 +27,7 @@ export default class Item extends Component {
     canvasTimeStart: PropTypes.number.isRequired,
     canvasTimeEnd: PropTypes.number.isRequired,
     canvasWidth: PropTypes.number.isRequired,
+    canvasTop: PropTypes.number.isRequired,
     order: PropTypes.object,
 
     dragSnap: PropTypes.number,
@@ -190,11 +191,12 @@ export default class Item extends Component {
       let groupDelta = 0
 
       const offset = getSumOffset(this.props.scrollRef).offsetTop
-      const scrolls = getSumScroll(this.props.scrollRef)
+      const scroll = getSumScroll(this.props.scrollRef).scrollTop
+      const y = e.pageY - offset + scroll - this.props.canvasTop;
 
       for (var key of Object.keys(groupTops)) {
         var groupTop = groupTops[key]
-        if (e.pageY - offset + scrolls.scrollTop > groupTop) {
+        if (y > groupTop) {
           groupDelta = parseInt(key, 10) - order.index
         } else {
           break

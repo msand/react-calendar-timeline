@@ -26,6 +26,7 @@ export default class Items extends Component {
     canvasTimeStart: PropTypes.number.isRequired,
     canvasTimeEnd: PropTypes.number.isRequired,
     canvasWidth: PropTypes.number.isRequired,
+    canvasTop: PropTypes.number.isRequired,
 
     dragSnap: PropTypes.number,
     minResizeWidth: PropTypes.number,
@@ -77,7 +78,8 @@ export default class Items extends Component {
       nextProps.canChangeGroup === this.props.canChangeGroup &&
       nextProps.canMove === this.props.canMove &&
       nextProps.canResize === this.props.canResize &&
-      nextProps.canSelect === this.props.canSelect
+      nextProps.canSelect === this.props.canSelect &&
+      nextProps.canvasTop === this.props.canvasTop
     )
   }
 
@@ -101,6 +103,7 @@ export default class Items extends Component {
       canvasTimeStart,
       canvasTimeEnd,
       dimensionItems,
+      canvasTop,
       keys,
       groups
     } = this.props
@@ -123,6 +126,7 @@ export default class Items extends Component {
               key={_get(item, itemIdKey)}
               item={item}
               keys={this.props.keys}
+              canvasTop={canvasTop}
               order={groupOrders[_get(item, itemGroupKey)]}
               dimensions={
                 sortedDimensionItems[_get(item, itemIdKey)].dimensions

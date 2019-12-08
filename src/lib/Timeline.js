@@ -802,13 +802,15 @@ export default class ReactCalendarTimeline extends Component {
     minUnit,
     dimensionItems,
     groupHeights,
-    groupTops
+    groupTops,
+    headerHeight
   ) {
     return (
       <Items
         canvasTimeStart={canvasTimeStart}
         canvasTimeEnd={canvasTimeEnd}
         canvasWidth={canvasWidth}
+        canvasTop={headerHeight}
         dimensionItems={dimensionItems}
         groupTops={groupTops}
         items={this.props.items}
@@ -1081,7 +1083,8 @@ export default class ReactCalendarTimeline extends Component {
                         minUnit,
                         dimensionItems,
                         groupHeights,
-                        groupTops
+                        groupTops,
+                        headerHeight
                       )}
                       {this.childrenWithProps(
                         canvasTimeStart,
