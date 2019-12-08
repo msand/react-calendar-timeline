@@ -76,6 +76,15 @@ $weekend: rgba(250, 246, 225, 0.5);
     border-right: $border-width solid $border-color;
     background: $sidebar-color;
 
+    .rct-sidebar-resize {
+      background-color: black;
+      position: absolute;
+      cursor: ew-resize;
+      width: 2px;
+      bottom: 0;
+      top: 0;
+    }
+
     &.rct-sidebar-right {
       border-right: 0;
       border-left: $border-width solid $border-color;

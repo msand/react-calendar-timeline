@@ -41,6 +41,13 @@
     box-sizing: border-box;
     border-right: 1px solid #bbb;
     background: #ffffff; }
+    .react-calendar-timeline .rct-sidebar .rct-sidebar-resize {
+      background-color: black;
+      position: absolute;
+      cursor: ew-resize;
+      width: 2px;
+      bottom: 0;
+      top: 0; }
     .react-calendar-timeline .rct-sidebar.rct-sidebar-right {
       border-right: 0;
       border-left: 1px solid #bbb; }

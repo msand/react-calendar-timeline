@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 
 import { _get, arraysEqual } from '../utility/generic'
+import interact from 'interactjs'
 
 export default class Sidebar extends Component {
   static propTypes = {
@@ -12,6 +13,7 @@ export default class Sidebar extends Component {
     groupHeights: PropTypes.array.isRequired,
     keys: PropTypes.object.isRequired,
     groupRenderer: PropTypes.func,
+    onResizeSidebar: PropTypes.func,
     isRightSidebar: PropTypes.bool
   }
 
@@ -25,6 +27,51 @@ export default class Sidebar extends Component {
     )
   }
 
+  componentDidMount() {
+    const { isRightSidebar } = this.props
+    interact(this.ref.current)
+      .resizable({
+        edges: {
+          left: isRightSidebar,
+          right: !isRightSidebar,
+          top: false,
+          bottom: false
+        }
+      })
+      .on('resizestart', e => {
+        this.setState({
+          resizing: true,
+          resizeEdge: isRightSidebar ? 'left' : 'right',
+          resizeStart: e.pageX,
+          resizeTime: 0
+        })
+      })
+      .on('resizemove', e => {
+        if (this.state.resizing) {
+          if (this.props.onResizeSidebar) {
+            this.props.onResizeSidebar(isRightSidebar, e.pageX)
+          }
+        }
+      })
+      .on('resizeend', e => {
+        if (this.state.resizing) {
+          if (this.props.onResizeSidebar) {
+            this.props.onResizeSidebar(isRightSidebar, e.pageX)
+          }
+          this.setState({
+            resizing: null,
+            resizeStart: null,
+            resizeEdge: null,
+            resizeTime: null
+          })
+        }
+      })
+
+    this.setState({
+      interactMounted: true
+    })
+  }
+
   renderGroupContent(group, isRightSidebar, groupTitleKey, groupRightTitleKey) {
     if (this.props.groupRenderer) {
       return React.createElement(this.props.groupRenderer, {
@@ -35,6 +82,8 @@ export default class Sidebar extends Component {
       return _get(group, isRightSidebar ? groupRightTitleKey : groupTitleKey)
     }
   }
+
+  ref = createRef()
 
   render() {
     const {
@@ -90,6 +139,11 @@ export default class Sidebar extends Component {
         style={sidebarStyle}
       >
         <div style={groupsStyle}>{groupLines}</div>
+        <div
+          ref={this.ref}
+          className={'rct-sidebar-resize'}
+          style={isRightSidebar ? { left: 0 } : { right: 0 }}
+        />
       </div>
     )
   }

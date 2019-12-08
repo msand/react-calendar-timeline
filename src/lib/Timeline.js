@@ -543,7 +543,7 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   changeZoom = (scale, offset = 0.5) => {
-    const { minZoom, maxZoom, minScale, maxScale, sidebarWidth, onTimeChange } = this.props
+    const { minZoom, maxZoom, minScale, maxScale, onTimeChange } = this.props
     const { visibleTimeEnd, visibleTimeStart, width } = this.state
     const oldZoom = visibleTimeEnd - visibleTimeStart
     const newScale = Math.min(Math.max(minScale, scale), maxScale)
@@ -551,6 +551,7 @@ export default class ReactCalendarTimeline extends Component {
       Math.max(Math.round(oldZoom * newScale), minZoom),
       maxZoom
     ) // min 1 min, max 20 years
+    const sidebarWidth = this.state.sidebarWidth || this.props.sidebarWidth
     if (sidebarWidth) {
       offset -= sidebarWidth / width
     }
@@ -843,14 +844,21 @@ export default class ReactCalendarTimeline extends Component {
     this.props.headerRef(el)
   }
 
+  onResizeSidebar = (isRightSidebar, width) => {
+    this.setState(
+      isRightSidebar ? { rightSidebarWidth: width } : { sidebarWidth: width }
+    )
+  }
+
   sidebar(height, groupHeights, headerHeight) {
-    const { sidebarWidth } = this.props
+    const sidebarWidth = this.state.sidebarWidth || this.props.sidebarWidth
     return (
       sidebarWidth && (
         <Sidebar
           groups={this.props.groups}
           groupRenderer={this.props.groupRenderer}
           keys={this.props.keys}
+          onResizeSidebar={this.onResizeSidebar}
           width={sidebarWidth}
           headerHeight={headerHeight}
           groupHeights={groupHeights}
@@ -861,13 +869,15 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   rightSidebar(height, groupHeights, headerHeight) {
-    const { rightSidebarWidth } = this.props
+    const rightSidebarWidth =
+      this.state.rightSidebarWidth || this.props.rightSidebarWidth
     return (
       rightSidebarWidth && (
         <Sidebar
           groups={this.props.groups}
           keys={this.props.keys}
           groupRenderer={this.props.groupRenderer}
+          onResizeSidebar={this.onResizeSidebar}
           isRightSidebar
           width={rightSidebarWidth}
           headerHeight={headerHeight}
@@ -980,8 +990,6 @@ export default class ReactCalendarTimeline extends Component {
     const {
       items,
       groups,
-      sidebarWidth,
-      rightSidebarWidth,
       timeSteps,
       traditionalZoom,
       headerHeight = 60
@@ -995,6 +1003,9 @@ export default class ReactCalendarTimeline extends Component {
       canvasTimeStart,
       canvasTimeEnd
     } = this.state
+    const sidebarWidth = this.state.sidebarWidth || this.props.sidebarWidth
+    const rightSidebarWidth =
+      this.state.rightSidebarWidth || this.props.rightSidebarWidth
     let { dimensionItems, height, groupHeights, groupTops } = this.state
 
     const zoom = visibleTimeEnd - visibleTimeStart
@@ -1042,8 +1053,8 @@ export default class ReactCalendarTimeline extends Component {
           <TimelineHeadersProvider
             registerScroll={this.handleHeaderRef}
             timeSteps={timeSteps}
-            leftSidebarWidth={this.props.sidebarWidth}
-            rightSidebarWidth={this.props.rightSidebarWidth}
+            leftSidebarWidth={sidebarWidth}
+            rightSidebarWidth={rightSidebarWidth}
           >
             <div
               style={this.props.style}

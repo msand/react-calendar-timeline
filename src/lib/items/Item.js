@@ -192,7 +192,7 @@ export default class Item extends Component {
 
       const offset = getSumOffset(this.props.scrollRef).offsetTop
       const scroll = getSumScroll(this.props.scrollRef).scrollTop
-      const y = e.pageY - offset + scroll - this.props.canvasTop;
+      const y = e.pageY - offset + scroll - this.props.canvasTop
 
       for (var key of Object.keys(groupTops)) {
         var groupTop = groupTops[key]
