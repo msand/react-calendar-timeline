@@ -12,7 +12,8 @@ class ScrollElement extends Component {
     isInteractingWithItem: PropTypes.bool.isRequired,
     onZoom: PropTypes.func.isRequired,
     onWheelZoom: PropTypes.func.isRequired,
-    onScroll: PropTypes.func.isRequired
+    onScroll: PropTypes.func.isRequired,
+    onResizeSidebar: PropTypes.func.isRequired
   }
 
   constructor() {
@@ -61,7 +62,12 @@ class ScrollElement extends Component {
     }
   }
 
+  resize = null
   handleMouseDown = e => {
+    if (e.target.className === 'rct-sidebar-resize') {
+      this.resize = e.target.classList.contains('rct-sidebar-resize-right')
+      return
+    }
     if (e.button === 0) {
       this.dragStartPosition = e.pageX
       this.dragLastPosition = e.pageX
@@ -74,6 +80,10 @@ class ScrollElement extends Component {
   handleMouseMove = e => {
     // this.props.onMouseMove(e)
     //why is interacting with item important?
+    if (this.resize !== null) {
+      this.props.onResizeSidebar(this.resize, e.pageX)
+      return
+    }
     if (this.state.isDragging && !this.props.isInteractingWithItem) {
       this.props.onScroll(
         this.scrollComponent.scrollLeft + this.dragLastPosition - e.pageX
@@ -85,6 +95,7 @@ class ScrollElement extends Component {
   handleMouseUp = () => {
     this.dragStartPosition = null
     this.dragLastPosition = null
+    this.resize = null
 
     this.setState({
       isDragging: false
@@ -95,12 +106,19 @@ class ScrollElement extends Component {
     // this.props.onMouseLeave(e)
     this.dragStartPosition = null
     this.dragLastPosition = null
+    this.resize = null
     this.setState({
       isDragging: false
     })
   }
 
   handleTouchStart = e => {
+    if (e.target.className === 'rct-sidebar-resize') {
+      this.resize = e.target.classList.contains('rct-sidebar-resize-right')
+      return
+    } else {
+      this.resize = null
+    }
     if (e.touches.length === 2) {
       e.preventDefault()
 
@@ -125,6 +143,11 @@ class ScrollElement extends Component {
     const { isInteractingWithItem, width, onZoom } = this.props
     if (isInteractingWithItem) {
       e.preventDefault()
+      return
+    }
+    if (this.resize !== null) {
+      this.resize = e.target.classList.contains('rct-sidebar-resize-right')
+      this.props.onResizeSidebar(this.resize, e.pageX)
       return
     }
     if (this.lastTouchDistance && e.touches.length === 2) {
@@ -167,6 +190,7 @@ class ScrollElement extends Component {
       this.lastSingleTouch = null
       this.singleTouchStart = null
     }
+    this.resize = null
   }
 
   componentWillUnmount() {

@@ -1069,6 +1069,7 @@ export default class ReactCalendarTimeline extends Component {
                   onWheelZoom={this.handleWheelZoom}
                   traditionalZoom={traditionalZoom}
                   onScroll={this.onScroll}
+                  onResizeSidebar={this.onResizeSidebar}
                   isInteractingWithItem={isInteractingWithItem}
                 >
                   {this.renderHeaders()}

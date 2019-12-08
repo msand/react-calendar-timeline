@@ -42,10 +42,9 @@
     border-right: 1px solid #bbb;
     background: #ffffff; }
     .react-calendar-timeline .rct-sidebar .rct-sidebar-resize {
-      background-color: rgba(74, 74, 74, 0.5);
       position: absolute;
       cursor: ew-resize;
-      width: 5px;
+      width: 8px;
       bottom: 0;
       top: 0; }
     .react-calendar-timeline .rct-sidebar.rct-sidebar-right {

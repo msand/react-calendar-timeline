@@ -139,7 +139,10 @@ export default class Sidebar extends Component {
         <div style={groupsStyle}>{groupLines}</div>
         <div
           ref={this.setResizeRef}
-          className={'rct-sidebar-resize'}
+          className={
+            'rct-sidebar-resize' +
+            (isRightSidebar ? ' rct-sidebar-resize-right' : '')
+          }
           style={isRightSidebar ? { left: 0 } : { right: 0 }}
         />
       </div>
