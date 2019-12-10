@@ -17,9 +17,10 @@ const criticalStyles = {
 
 // FIXME: this creates a new object each time in render
 // might want to memoize this?
-export const createMarkerStylesWithLeftOffset = leftOffset => ({
+export const createMarkerStylesWithLeftOffset = (leftOffset, height) => ({
   ...criticalStyles,
-  left: leftOffset
+  left: leftOffset,
+  height
 })
 
 export const createDefaultRenderer = dataTestidValue => {

@@ -10,7 +10,7 @@ import CursorMarker from './implementations/CursorMarker'
 const TimelineMarkersRenderer = () => {
   return (
     <TimelineStateConsumer>
-      {({ getLeftOffsetFromDate }) => (
+      {({ getLeftOffsetFromDate, getTimelineState }) => (
         <TimelineMarkersConsumer>
           {({ markers }) => {
             return markers.map(marker => {
@@ -20,6 +20,7 @@ const TimelineMarkersRenderer = () => {
                     <TodayMarker
                       key={marker.id}
                       getLeftOffsetFromDate={getLeftOffsetFromDate}
+                      getTimelineState={getTimelineState}
                       renderer={marker.renderer}
                       interval={marker.interval}
                     />

@@ -41,6 +41,7 @@ export class TimelineStateProvider extends React.Component {
     canvasTimeStart: PropTypes.number.isRequired,
     canvasTimeEnd: PropTypes.number.isRequired,
     canvasWidth: PropTypes.number.isRequired,
+    canvasHeight: PropTypes.number.isRequired,
     showPeriod: PropTypes.func.isRequired,
     timelineUnit: PropTypes.string.isRequired,
     timelineWidth: PropTypes.number.isRequired
@@ -66,6 +67,7 @@ export class TimelineStateProvider extends React.Component {
       canvasTimeStart,
       canvasTimeEnd,
       canvasWidth,
+      canvasHeight,
       timelineUnit,
       timelineWidth
     } = this.props
@@ -75,6 +77,7 @@ export class TimelineStateProvider extends React.Component {
       canvasTimeStart,
       canvasTimeEnd,
       canvasWidth,
+      canvasHeight,
       timelineUnit,
       timelineWidth
     } // REVIEW,

@@ -1045,6 +1045,7 @@ export default class ReactCalendarTimeline extends Component {
         canvasTimeStart={canvasTimeStart}
         canvasTimeEnd={canvasTimeEnd}
         canvasWidth={canvasWidth}
+        canvasHeight={height}
         showPeriod={this.showPeriod}
         timelineUnit={minUnit}
         timelineWidth={this.state.width}

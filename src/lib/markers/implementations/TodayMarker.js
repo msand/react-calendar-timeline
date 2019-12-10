@@ -13,6 +13,7 @@ const defaultRenderer = createDefaultRenderer('default-today-line')
 class TodayMarker extends React.Component {
   static propTypes = {
     getLeftOffsetFromDate: PropTypes.func.isRequired,
+    getTimelineState: PropTypes.func.isRequired,
     renderer: PropTypes.func,
     interval: PropTypes.number.isRequired
   }
@@ -51,7 +52,8 @@ class TodayMarker extends React.Component {
   render() {
     const { date } = this.state
     const leftOffset = this.props.getLeftOffsetFromDate(date)
-    const styles = createMarkerStylesWithLeftOffset(leftOffset)
+    const height = this.props.getTimelineState().canvasHeight
+    const styles = createMarkerStylesWithLeftOffset(leftOffset, height)
     return this.props.renderer({ styles, date })
   }
 }
